@@ -16,17 +16,13 @@ This Terraform module creates an IAM role in your AWS account that grants Cloudt
 - AWS CLI configured with appropriate credentials
 - AWS account with permissions to create IAM roles and policies
 
-## Quick Start
+## Usage
 
-1. Create a new directory for your Terraform configuration:
-```bash
-mkdir cloudtrim-setup && cd cloudtrim-setup
-```
+1. Create a new Terraform configuration file (e.g., `main.tf`):
 
-2. Create a new Terraform configuration file (e.g., `main.tf`):
 ```hcl
 module "cloudtrim_access" {
-  source      = "git::https://github.com/cloudlagom/terraform-aws-access-role.git?ref=v1.0.1"  # Use latest stable version
+  source      = "git::https://github.com/cloudlagom/terraform-aws-access-role.git"
   external_id = "your-external-id-from-cloudtrim"  # Required: Get this from Cloudtrim
   
   # Optional configurations
@@ -34,38 +30,22 @@ module "cloudtrim_access" {
 }
 ```
 
-3. Initialize Terraform:
+2. Initialize Terraform:
 ```bash
 terraform init
 ```
 
-4. Review the planned changes:
+3. Review the planned changes:
 ```bash
 terraform plan
 ```
 
-5. Apply the configuration:
+4. Apply the configuration:
 ```bash
 terraform apply
 ```
 
-6. After successful application, you'll see the outputs needed for Cloudtrim setup.
-
-## Version Reference
-
-You can use a specific version of this module by appending `?ref=VERSION` to the source URL. For example:
-
-```hcl
-# Latest stable version (recommended)
-source = "git::https://github.com/cloudlagom/terraform-aws-access-role.git?ref=v1.0.1"
-
-# Latest development version (not recommended for production)
-source = "git::https://github.com/cloudlagom/terraform-aws-access-role.git"
-```
-
-Available versions:
-- v1.0.1: Latest stable version with fixed outputs
-- v1.0.0: Initial release
+5. After successful application, copy the role ARN from the outputs and provide it to Cloudtrim.
 
 ## Important Security Notice
 
@@ -80,28 +60,9 @@ Available versions:
 
 ## Outputs
 
-After running `terraform apply`, you will see the following outputs:
-
-| Name | Description | Usage |
-|------|-------------|-------|
-| cloudtrim_role_arn | ARN of the created IAM role | Copy this value to the Cloudtrim AWS connection form |
-| aws_account_id | Your AWS Account ID | For reference and verification |
-| cloudtrim_connection_info | Complete connection details | Contains all necessary information including role ARN, external ID, and account details |
-
-Example output:
-```hcl
-Outputs:
-
-cloudtrim_role_arn = "arn:aws:iam::123456789012:role/CloudtrimAccessRole"
-aws_account_id = "123456789012"
-cloudtrim_connection_info = {
-  "role_arn"          = "arn:aws:iam::123456789012:role/CloudtrimAccessRole"
-  "external_id"       = "your-external-id"
-  "account_id"        = "123456789012"
-  "role_name"         = "CloudtrimAccessRole"
-  "cloudtrim_account" = "981515186395"
-}
-```
+| Name | Description |
+|------|-------------|
+| cloudtrim_role_arn | ARN of the created IAM role |
 
 ## Permissions Granted
 
@@ -118,22 +79,9 @@ The module grants read-only access to:
 - DynamoDB
 - Tags
 
-## Troubleshooting
-
-If you encounter any issues:
-
-1. Ensure your AWS credentials are properly configured
-2. Verify you have sufficient IAM permissions
-3. Make sure you're using the correct external ID from Cloudtrim
-4. Check that you're in the correct AWS region
-5. Verify you're using a stable version of the module (e.g., ?ref=v1.0.1)
-
 ## Support
 
-For support:
-- Open an issue in the GitHub repository
-- Contact Cloudtrim support
-- Check the AWS IAM console for role verification
+For support, please contact Cloudtrim support or open an issue in the GitHub repository.
 
 ## License
 
