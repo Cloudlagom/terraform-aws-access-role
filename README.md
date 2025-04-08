@@ -26,7 +26,7 @@ mkdir cloudtrim-setup && cd cloudtrim-setup
 2. Create a new Terraform configuration file (e.g., `main.tf`):
 ```hcl
 module "cloudtrim_access" {
-  source      = "git::https://github.com/cloudlagom/terraform-aws-access-role.git"
+  source      = "git::https://github.com/cloudlagom/terraform-aws-access-role.git?ref=v1.0.1"  # Use latest stable version
   external_id = "your-external-id-from-cloudtrim"  # Required: Get this from Cloudtrim
   
   # Optional configurations
@@ -50,6 +50,22 @@ terraform apply
 ```
 
 6. After successful application, you'll see the outputs needed for Cloudtrim setup.
+
+## Version Reference
+
+You can use a specific version of this module by appending `?ref=VERSION` to the source URL. For example:
+
+```hcl
+# Latest stable version (recommended)
+source = "git::https://github.com/cloudlagom/terraform-aws-access-role.git?ref=v1.0.1"
+
+# Latest development version (not recommended for production)
+source = "git::https://github.com/cloudlagom/terraform-aws-access-role.git"
+```
+
+Available versions:
+- v1.0.1: Latest stable version with fixed outputs
+- v1.0.0: Initial release
 
 ## Important Security Notice
 
@@ -110,6 +126,7 @@ If you encounter any issues:
 2. Verify you have sufficient IAM permissions
 3. Make sure you're using the correct external ID from Cloudtrim
 4. Check that you're in the correct AWS region
+5. Verify you're using a stable version of the module (e.g., ?ref=v1.0.1)
 
 ## Support
 
