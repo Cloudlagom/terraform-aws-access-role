@@ -1,5 +1,6 @@
+# Role information
 output "cloudtrim_role_arn" {
-  description = "ARN of the IAM role created for Cloudtrim"
+  description = "ARN of the IAM role created for Cloudtrim (Use this in the Cloudtrim connection form)"
   value       = aws_iam_role.cloudtrim_role.arn
   sensitive   = false
 }
@@ -14,4 +15,43 @@ output "cloudtrim_policy_arn" {
   description = "ARN of the IAM policy created for Cloudtrim"
   value       = aws_iam_policy.cloudtrim_policy.arn
   sensitive   = false
+}
+
+output "cloudtrim_role_unique_id" {
+  description = "Unique ID of the IAM role created for Cloudtrim"
+  value       = aws_iam_role.cloudtrim_role.unique_id
+  sensitive   = false
+}
+
+# AWS Account Information
+output "aws_account_id" {
+  description = "AWS Account ID where the role is created"
+  value       = data.aws_caller_identity.current.account_id
+  sensitive   = false
+}
+
+# Get AWS Account Alias if it exists
+data "aws_iam_account_alias" "current" {
+  count = 1
+}
+
+output "aws_account_alias" {
+  description = "AWS Account Alias (if set)"
+  value       = try(data.aws_iam_account_alias.current[0].account_alias, "No alias set")
+  sensitive   = false
+}
+
+# Connection Information Block
+output "cloudtrim_connection_info" {
+  description = "Complete information needed for Cloudtrim AWS account connection"
+  value = {
+    role_arn          = aws_iam_role.cloudtrim_role.arn
+    external_id       = var.external_id
+    account_id        = data.aws_caller_identity.current.account_id
+    account_alias     = try(data.aws_iam_account_alias.current[0].account_alias, "No alias set")
+    role_name         = aws_iam_role.cloudtrim_role.name
+    role_unique_id    = aws_iam_role.cloudtrim_role.unique_id
+    cloudtrim_account = local.cloudtrim_account_id
+  }
+  sensitive = false
 } 
