@@ -32,12 +32,16 @@ output "aws_account_id" {
 
 # Get AWS Account Alias if it exists
 data "aws_iam_account_alias" "current" {
-  count = 1
+  count = 0  # Changed to 0 to avoid errors when no alias exists
+}
+
+locals {
+  account_alias = length(data.aws_iam_account_alias.current) > 0 ? data.aws_iam_account_alias.current[0].account_alias : null
 }
 
 output "aws_account_alias" {
   description = "AWS Account Alias (if set)"
-  value       = try(data.aws_iam_account_alias.current[0].account_alias, "No alias set")
+  value       = local.account_alias != null ? local.account_alias : data.aws_caller_identity.current.account_id
   sensitive   = false
 }
 
@@ -48,7 +52,7 @@ output "cloudtrim_connection_info" {
     role_arn          = aws_iam_role.cloudtrim_role.arn
     external_id       = var.external_id
     account_id        = data.aws_caller_identity.current.account_id
-    account_alias     = try(data.aws_iam_account_alias.current[0].account_alias, "No alias set")
+    account_alias     = local.account_alias != null ? local.account_alias : data.aws_caller_identity.current.account_id
     role_name         = aws_iam_role.cloudtrim_role.name
     role_unique_id    = aws_iam_role.cloudtrim_role.unique_id
     cloudtrim_account = local.cloudtrim_account_id
