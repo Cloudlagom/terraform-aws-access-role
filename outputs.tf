@@ -1,3 +1,10 @@
+# This file is intentionally empty.
+# All outputs are defined in main.tf to avoid duplicate definitions.
+# See main.tf for the following outputs:
+# - cloudtrim_role_arn: The ARN to use in Cloudtrim AWS connection
+# - aws_account_id: Your AWS account ID
+# - cloudtrim_connection_info: Complete connection details
+
 # Role information
 output "cloudtrim_role_arn" {
   description = "ARN of the IAM role created for Cloudtrim (Use this in the Cloudtrim connection form)"
