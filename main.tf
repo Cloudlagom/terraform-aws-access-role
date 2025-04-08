@@ -144,10 +144,10 @@ resource "aws_iam_role_policy_attachment" "cloudtrim_attach_policy" {
   policy_arn = aws_iam_policy.cloudtrim_policy.arn
 }
 
-# Get the AWS account ID
-data "aws_caller_identity" "current" {}
-
-# Get the AWS account alias if it exists
-data "aws_iam_account_alias" "current" {
-  count = var.aws_account_alias != "" ? 0 : 1
+module "cloudtrim_access" {
+  source      = "git::https://github.com/cloudlagom/terraform-aws-access-role.git"
+  external_id = "your-external-id-from-cloudtrim"  # They'll get this from Cloudtrim
+  
+  # Optional configurations
+  region     = "us-east-1"  # Optional, defaults to us-east-1
 }
