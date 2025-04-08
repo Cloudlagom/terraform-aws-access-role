@@ -143,3 +143,25 @@ resource "aws_iam_role_policy_attachment" "cloudtrim_attach_policy" {
   role       = aws_iam_role.cloudtrim_role.name
   policy_arn = aws_iam_policy.cloudtrim_policy.arn
 }
+
+# Essential outputs for Cloudtrim connection
+output "cloudtrim_role_arn" {
+  description = "Copy this Role ARN and paste it in the Cloudtrim AWS connection form"
+  value       = aws_iam_role.cloudtrim_role.arn
+}
+
+output "aws_account_id" {
+  description = "Your AWS Account ID for reference"
+  value       = data.aws_caller_identity.current.account_id
+}
+
+output "cloudtrim_connection_info" {
+  description = "Complete information for Cloudtrim AWS connection"
+  value = {
+    role_arn          = aws_iam_role.cloudtrim_role.arn
+    external_id       = var.external_id
+    account_id        = data.aws_caller_identity.current.account_id
+    role_name         = aws_iam_role.cloudtrim_role.name
+    cloudtrim_account = local.cloudtrim_account_id
+  }
+}
